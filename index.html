@@ -3,211 +3,124 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Birthday Countdown</title>
+  <title>Happy Birthday Glades 💖</title>
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#f97316;--muted:#94a3b8}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
-    body{background:linear-gradient(180deg,#071025 0%, #0d1530 100%);display:flex;align-items:center;justify-content:center;color:#e6eef8}
-    .card{width:min(880px,94vw);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:36px;box-shadow:0 10px 30px rgba(2,6,23,0.6);backdrop-filter:blur(6px);position:relative;overflow:hidden}
-    header{display:flex;gap:16px;align-items:center}
-    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#f43f5e);display:flex;align-items:center;justify-content:center;font-weight:700}
-    h1{margin:0;font-size:22px}
-    p.lead{margin:6px 0 18px;color:var(--muted)}
-
-    .countdown{display:flex;gap:12px;align-items:center;justify-content:center;margin:22px 0}
-    .unit{background:rgba(255,255,255,0.03);padding:18px 20px;border-radius:12px;min-width:90px;text-align:center}
-    .num{font-size:34px;font-weight:700}
-    .label{font-size:12px;color:var(--muted);margin-top:6px}
-
-    .controls{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:8px}
-    .btn{border:0;padding:10px 14px;border-radius:10px;background:#0b1220;color:#e6eef8;cursor:pointer;box-shadow:0 6px 16px rgba(2,6,23,0.5)}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),#ef4444);color:#fff}
-
-    .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.85));backdrop-filter: blur(3px);flex-direction:column;gap:10px;opacity:0;pointer-events:none;transition:opacity .45s}
-    .overlay.show{opacity:1;pointer-events:auto}
-    .big{font-size:48px;font-weight:800;letter-spacing:1px}
-    .sub{color:var(--muted);font-size:16px}
-
-    /* small sparkle/confetti canvas sits behind overlay text */
-    canvas#confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-
-    footer{display:flex;align-items:center;justify-content:space-between;margin-top:18px;color:var(--muted);font-size:13px}
-    @media (max-width:520px){.countdown{flex-wrap:wrap}.unit{min-width:70px;padding:14px 12px}.big{font-size:34px}}
+    :root{--bg:#0f1724;--accent:#ff4f81;--muted:#f8c6d3}
+    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:#fff;overflow:hidden}
+    body{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+    h1{font-size:2.4rem;margin:0.5rem 0;color:#ff7fa2}
+    p{font-size:1.1rem;margin:0.5rem auto;max-width:600px;line-height:1.6;color:var(--muted)}
+    .countdown{display:flex;gap:1rem;margin-top:2rem}
+    .unit{background:rgba(255,255,255,0.1);padding:1rem 1.3rem;border-radius:12px;min-width:80px}
+    .num{font-size:2rem;font-weight:700}
+    .label{font-size:0.9rem;color:#ffb6c1}
+    #slideshow,#overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:10;text-align:center}
+    #slideshow img{max-width:90vw;max-height:80vh;border-radius:20px;object-fit:cover;box-shadow:0 0 30px rgba(255,192,203,0.4);animation:fade 3s ease-in-out infinite alternate}
+    @keyframes fade{from{opacity:0.5}to{opacity:1}}
+    #overlay{background:linear-gradient(180deg,#ff99bb,#ff4f81);color:white;font-size:2rem;font-weight:700}
+    canvas#confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:9}
+    .msg{font-size:1.2rem;color:#fff3f3;margin-top:1rem;max-width:700px;line-height:1.6}
+    footer{position:fixed;bottom:10px;font-size:0.8rem;color:#ffb6c1}
   </style>
 </head>
 <body>
-  <div class="card">
-    <header>
-      <div class="logo">BD</div>
-      <div>
-        <h1>Birthday Countdown</h1>
-        <p class="lead">A small surprise page — the timer counts down to midnight and then shows the birthday message.</p>
-      </div>
-    </header>
-
-    <div class="countdown" aria-live="polite">
-      <div class="unit"><div id="days" class="num">0</div><div class="label">Days</div></div>
-      <div class="unit"><div id="hours" class="num">00</div><div class="label">Hours</div></div>
-      <div class="unit"><div id="minutes" class="num">00</div><div class="label">Minutes</div></div>
-      <div class="unit"><div id="seconds" class="num">00</div><div class="label">Seconds</div></div>
-    </div>
-
-    <div class="controls">
-      <button id="setName" class="btn">Set Name</button>
-      <button id="share" class="btn">Share / Copy Link</button>
-      <button id="reset" class="btn">Reset</button>
-    </div>
-
-    <div class="overlay" id="overlay" role="dialog" aria-hidden="true">
-      <canvas id="confetti"></canvas>
-      <div class="big" id="greet">Happy Birthday!</div>
-      <div class="sub" id="greetSub">Wishing you a wonderful day ✨</div>
-      <div style="margin-top:12px"><button id="closeOverlay" class="btn primary">Close</button></div>
-    </div>
-
-    <footer>
-      <div>Local midnight target: <span id="targetText"></span></div>
-      <div>Made with ♥</div>
-    </footer>
+  <h1>Countdown to Glades' Birthday 💕</h1>
+  <div class="countdown">
+    <div class="unit"><div id="days" class="num">0</div><div class="label">Days</div></div>
+    <div class="unit"><div id="hours" class="num">00</div><div class="label">Hours</div></div>
+    <div class="unit"><div id="minutes" class="num">00</div><div class="label">Minutes</div></div>
+    <div class="unit"><div id="seconds" class="num">00</div><div class="label">Seconds</div></div>
   </div>
 
-<script>
-// --- CONFIG: if you want a specific date (e.g., birthday falls midnight of Oct 26, 2025),
-// replace the getTargetMidnight() implementation below with a fixed date like:
-// function getTargetMidnight(){ return new Date('2025-10-26T00:00:00'); }
+  <div id="slideshow">
+    <!-- 💖 Replace these image links later with yours (3–5 photos) -->
+    <img id="slide" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=900" alt="photo" />
+  </div>
 
-function getTargetMidnight(){
-  // target is the next occurrence of local midnight (start of next day)
-  const now = new Date();
-  const target = new Date(now);
-  target.setDate(now.getDate() + 1);
+  <div id="overlay">
+    <canvas id="confetti"></canvas>
+    <div id="greet">Happy Birthday, Glades Azhagi 💖💖💖</div>
+    <div class="msg">To the one who filled my life... Need years to spend with you my love... And I loveeee you always... ❤️💞💓💖💘💝💗</div>
+  </div>
+
+  <footer>Made with infinite ❤️ by your love</footer>
+
+  <audio id="song" src="https://www.youtube.com/embed/uPD0QOGTmMI?autoplay=1" preload="auto"></audio>
+
+  <script>
+  const target = new Date();
+  target.setDate(target.getDate() + 1);
   target.setHours(0,0,0,0);
-  return target;
-}
 
-// DOM refs
-const daysEl = document.getElementById('days');
-const hrsEl = document.getElementById('hours');
-const minsEl = document.getElementById('minutes');
-const secsEl = document.getElementById('seconds');
-const overlay = document.getElementById('overlay');
-const greet = document.getElementById('greet');
-const greetSub = document.getElementById('greetSub');
-const targetText = document.getElementById('targetText');
-const confettiCanvas = document.getElementById('confetti');
-const setNameBtn = document.getElementById('setName');
-const shareBtn = document.getElementById('share');
-const resetBtn = document.getElementById('reset');
-const closeOverlay = document.getElementById('closeOverlay');
+  const daysEl=document.getElementById('days');
+  const hrsEl=document.getElementById('hours');
+  const minsEl=document.getElementById('minutes');
+  const secsEl=document.getElementById('seconds');
+  const slideShow=document.getElementById('slideshow');
+  const overlay=document.getElementById('overlay');
+  const song=document.getElementById('song');
+  const slide=document.getElementById('slide');
 
-let target = getTargetMidnight();
-let name = localStorage.getItem('bd-name') || '';
-if(!name){ name = '' }
+  // 💖 Add your own photo URLs below later
+  const photos=[
+    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=900',
+    'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=900',
+    'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=900'
+  ];
+  let photoIndex=0;
 
-function updateTargetText(){
-  targetText.textContent = target.toLocaleString();
-}
-updateTargetText();
-
-function pad(n){ return String(n).padStart(2,'0'); }
-
-let ended = false;
-function tick(){
-  const now = new Date();
-  let diff = target - now;
-  if(diff <= 0){
-    if(!ended){ showOverlay(); ended = true; }
-    diff = 0;
+  function tick(){
+    const now=new Date();
+    const diff=target-now;
+    if(diff<=0){startSlideshow();return;}
+    const s=Math.floor(diff/1000)%60;
+    const m=Math.floor(diff/60000)%60;
+    const h=Math.floor(diff/3600000)%24;
+    const d=Math.floor(diff/86400000);
+    daysEl.textContent=d;
+    hrsEl.textContent=String(h).padStart(2,'0');
+    minsEl.textContent=String(m).padStart(2,'0');
+    secsEl.textContent=String(s).padStart(2,'0');
   }
-  const sec = Math.floor(diff/1000)%60;
-  const min = Math.floor(diff/60000)%60;
-  const hrs = Math.floor(diff/3600000)%24;
-  const days = Math.floor(diff/86400000);
-  daysEl.textContent = days;
-  hrsEl.textContent = pad(hrs);
-  minsEl.textContent = pad(min);
-  secsEl.textContent = pad(sec);
-}
+  setInterval(tick,1000);
+  tick();
 
-let interval = setInterval(tick, 250);
-tick();
-
-// Overlay and confetti
-function showOverlay(){
-  overlay.classList.add('show');
-  overlay.setAttribute('aria-hidden','false');
-  const displayName = name ? name : '';
-  greet.textContent = displayName ? `Happy Birthday, ${displayName}!` : 'Happy Birthday!';
-  greetSub.textContent = displayName ? 'Hope your day is full of smiles 🎉' : 'Wishing you a wonderful day ✨';
-  startConfetti();
-}
-
-closeOverlay.addEventListener('click', ()=>{
-  overlay.classList.remove('show');
-  overlay.setAttribute('aria-hidden','true');
-});
-
-// Simple confetti implementation (lightweight)
-function startConfetti(){
-  const ctx = confettiCanvas.getContext('2d');
-  confettiCanvas.width = confettiCanvas.offsetWidth * devicePixelRatio;
-  confettiCanvas.height = confettiCanvas.offsetHeight * devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-
-  const pieces = [];
-  const colors = ['#FF577F','#FFD166','#06D6A0','#4D96FF','#C77DFF'];
-  for(let i=0;i<120;i++){
-    pieces.push({x: Math.random()*confettiCanvas.offsetWidth, y: Math.random()*-confettiCanvas.offsetHeight, r: (6+Math.random()*10), c: colors[Math.floor(Math.random()*colors.length)], vx:(-2+Math.random()*4), vy:2+Math.random()*6, rot:Math.random()*360});
+  function startSlideshow(){
+    slideShow.style.display='flex';
+    let count=0;
+    const interval=setInterval(()=>{
+      slide.src=photos[photoIndex];
+      photoIndex=(photoIndex+1)%photos.length;
+      count++;
+      if(count>photos.length*2){clearInterval(interval);endSlideshow();}
+    },2000);
+    // play song (replace YouTube embed with audio link if needed)
   }
-  let frames = 0;
-  function draw(){
-    frames++;
-    ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-    for(const p of pieces){
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.06; // gravity
-      p.rot += p.vx*2;
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot * Math.PI/180);
-      ctx.fillStyle = p.c;
-      ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*0.6);
-      ctx.restore();
-      if(p.y > confettiCanvas.offsetHeight+30){ p.y = Math.random()*-confettiCanvas.offsetHeight; p.x = Math.random()*confettiCanvas.offsetWidth; p.vy = 2+Math.random()*6; }
+
+  function endSlideshow(){
+    slideShow.style.display='none';
+    overlay.style.display='flex';
+    startConfetti();
+  }
+
+  function startConfetti(){
+    const canvas=document.getElementById('confetti');
+    const ctx=canvas.getContext('2d');
+    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+    const pieces=[];const colors=['#FF69B4','#FFD700','#FF1493','#FFA07A','#FFB6C1'];
+    for(let i=0;i<150;i++){
+      pieces.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vy:2+Math.random()*4,size:6+Math.random()*6,color:colors[Math.floor(Math.random()*colors.length)]});
     }
-    if(frames < 800) requestAnimationFrame(draw);
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      pieces.forEach(p=>{
+        ctx.beginPath();ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.size,p.size);
+        p.y+=p.vy;if(p.y>canvas.height)p.y=-10;
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
   }
-  requestAnimationFrame(draw);
-}
-
-// Controls
-setNameBtn.addEventListener('click', ()=>{
-  const v = prompt('Enter her name (optional) — this will appear in the greeting', name || '');
-  if(v !== null){ name = v.trim(); localStorage.setItem('bd-name', name); alert('Name saved.'); }
-});
-
-shareBtn.addEventListener('click', async ()=>{
-  // copy current page URL (works if hosted). If opened as file, copy a fallback message.
-  try{
-    const url = location.href;
-    await navigator.clipboard.writeText(url);
-    alert('Link copied to clipboard. Share this page with your girlfriend!');
-  }catch(e){
-    const fallback = 'Open this file in a browser to see the countdown.';
-    try{ await navigator.clipboard.writeText(fallback); alert('Copied instructions to clipboard.'); }catch(e){ alert('Unable to copy.'); }
-  }
-});
-
-resetBtn.addEventListener('click', ()=>{
-  if(confirm('Reset stored name and restart countdown?')){
-    localStorage.removeItem('bd-name'); name=''; target = getTargetMidnight(); updateTargetText(); ended=false; tick();
-  }
-});
-
-// If user wants a specific date, there's a small helper in console:
-console.log('To set a fixed target date: open the file and replace getTargetMidnight() to return a specific Date (e.g. new Date("2025-10-26T00:00:00"))');
-
-</script>
+  </script>
 </body>
 </html>
