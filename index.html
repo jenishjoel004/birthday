@@ -5,27 +5,115 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Happy Birthday Glades 💖</title>
 <style>
-:root{--bg:#0f1724;--accent:#ff4f81;--muted:#f8c6d3}
-html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:#fff;overflow:hidden}
-body{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
-h1{font-size:2.6rem;margin:0.5rem 0;color:#ff7fa2;text-shadow:0 0 15px #ff4f81}
-p{font-size:1.2rem;margin:0.5rem auto;max-width:600px;line-height:1.6;color:var(--muted)}
-.countdown{display:flex;gap:1rem;margin-top:2rem}
-.unit{background:rgba(255,255,255,0.1);padding:1rem 1.3rem;border-radius:12px;min-width:80px}
-.num{font-size:2rem;font-weight:700}
-.label{font-size:0.9rem;color:#ffb6c1}
-#slideshow,#overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:10;text-align:center}
-#slideshow img{max-width:90vw;max-height:80vh;border-radius:20px;object-fit:cover;box-shadow:0 0 30px rgba(255,192,203,0.4);animation:fade 3s ease-in-out}
-@keyframes fade{from{opacity:0.5}to{opacity:1}}
-#overlay{background:linear-gradient(180deg,#ff99bb,#ff4f81);color:white;font-size:2.2rem;font-weight:700;overflow:hidden}
-canvas#confetti, canvas#hearts{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:9}
-.msg{font-size:1.3rem;color:#fff3f3;margin-top:1rem;max-width:700px;line-height:1.6;text-shadow:0 0 10px #ff4f81}
-footer{position:fixed;bottom:10px;font-size:0.9rem;color:#ffb6c1}
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  /* === ADD YOUR BASE64 BACKGROUND BELOW === */
+  /* Example: background-image: url('data:image/png;base64,AAAA...'); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+h1 {
+  font-size: 2.6rem;
+  margin: 0.5rem 0;
+  color: #ff7fa2;
+  text-shadow: 0 0 15px #ff4f81;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+p {
+  font-size: 1.2rem;
+  margin: 0.5rem auto;
+  max-width: 600px;
+  line-height: 1.6;
+  color: #fff3f3;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+.countdown {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  z-index: 10;
+  position: relative;
+}
+.unit {
+  background: rgba(255,255,255,0.1);
+  padding: 1rem 1.3rem;
+  border-radius: 12px;
+  min-width: 80px;
+}
+.num {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.label {
+  font-size: 0.9rem;
+  color: #ffb6c1;
+}
+#slideshow, #overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 10;
+  text-align: center;
+}
+#slideshow img {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 0 30px rgba(255,192,203,0.4);
+  animation: fade 3s ease-in-out;
+}
+@keyframes fade {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+#overlay {
+  background: linear-gradient(180deg,#ff99bb,#ff4f81);
+  color: white;
+  font-size: 2.2rem;
+  font-weight: 700;
+  overflow: hidden;
+}
+canvas#confetti, canvas#hearts {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9;
+}
+.msg {
+  font-size: 1.3rem;
+  color: #fff3f3;
+  margin-top: 1rem;
+  max-width: 700px;
+  line-height: 1.6;
+  text-shadow: 0 0 10px #ff4f81;
+}
+footer {
+  position: fixed;
+  bottom: 10px;
+  font-size: 0.9rem;
+  color: #ffb6c1;
+}
 </style>
 </head>
 <body>
 
 <h1>Countdown to Glades' Birthday 💕💖💘</h1>
+
 <div class="countdown">
   <div class="unit"><div id="days" class="num">0</div><div class="label">Days</div></div>
   <div class="unit"><div id="hours" class="num">00</div><div class="label">Hours</div></div>
@@ -51,39 +139,38 @@ footer{position:fixed;bottom:10px;font-size:0.9rem;color:#ffb6c1}
 <footer>Made with infinite ❤️ by your love</footer>
 
 <script>
-// Set countdown to Glades' birthday
+// Countdown
 const target = new Date('2025-10-26T00:00:00');
+const daysEl = document.getElementById('days');
+const hrsEl = document.getElementById('hours');
+const minsEl = document.getElementById('minutes');
+const secsEl = document.getElementById('seconds');
+const slideShow = document.getElementById('slideshow');
+const overlay = document.getElementById('overlay');
+const slide = document.getElementById('slide');
 
-const daysEl=document.getElementById('days');
-const hrsEl=document.getElementById('hours');
-const minsEl=document.getElementById('minutes');
-const secsEl=document.getElementById('seconds');
-const slideShow=document.getElementById('slideshow');
-const overlay=document.getElementById('overlay');
-const slide=document.getElementById('slide');
-
-// Replace these with your own images (must be direct links ending in .jpg/.png)
-const photos=[
-  'https://i.imgur.com/abc123.jpg', // first image
-  'https://i.imgur.com/def456.jpg', 
-  'https://i.imgur.com/ghi789.jpg', 
-  'https://i.imgur.com/jkl012.jpg'
+// Replace with your own direct image links
+const photos = [
+  "https://picsum.photos/800/500?random=1",
+  "https://picsum.photos/800/500?random=2",
+  "https://picsum.photos/800/500?random=3",
+  "https://picsum.photos/800/500?random=4"
 ];
-const durations=[4000,2000,2000,2000]; // first image 4s, others 2s
-let photoIndex=0;
+const durations = [4000, 2000, 2000, 2000]; // first 4s, others 2s
+let photoIndex = 0;
 
-function tick(){
-  const now=new Date();
-  const diff=target-now;
-  if(diff<=0){startSlideshow();return;}
-  const s=Math.floor(diff/1000)%60;
-  const m=Math.floor(diff/60000)%60;
-  const h=Math.floor(diff/3600000)%24;
-  const d=Math.floor(diff/86400000);
-  daysEl.textContent=d;
-  hrsEl.textContent=String(h).padStart(2,'0');
-  minsEl.textContent=String(m).padStart(2,'0');
-  secsEl.textContent=String(s).padStart(2,'0');
+function tick() {
+  const now = new Date();
+  const diff = target - now;
+  if (diff <= 0) { startSlideshow(); return; }
+  const s = Math.floor(diff/1000)%60;
+  const m = Math.floor(diff/60000)%60;
+  const h = Math.floor(diff/3600000)%24;
+  const d = Math.floor(diff/86400000);
+  daysEl.textContent = d;
+  hrsEl.textContent = String(h).padStart(2,'0');
+  minsEl.textContent = String(m).padStart(2,'0');
+  secsEl.textContent = String(s).padStart(2,'0');
 }
 setInterval(tick,1000);
 tick();
@@ -91,14 +178,11 @@ tick();
 function startSlideshow(){
   slideShow.style.display='flex';
   function nextSlide(){
-    slide.src=photos[photoIndex];
-    const duration=durations[photoIndex]||2000;
+    slide.src = photos[photoIndex];
+    const duration = durations[photoIndex] || 2000;
     photoIndex++;
-    if(photoIndex<photos.length){
-      setTimeout(nextSlide,duration);
-    } else {
-      setTimeout(endSlideshow,duration);
-    }
+    if(photoIndex < photos.length) setTimeout(nextSlide,duration);
+    else setTimeout(endSlideshow,duration);
   }
   nextSlide();
 }
@@ -135,7 +219,7 @@ function startConfetti(){
   draw();
 }
 
-// Big floating hearts
+// Floating hearts
 function startHearts(){
   const canvas=document.getElementById('hearts');
   const ctx=canvas.getContext('2d');
@@ -158,14 +242,13 @@ function startHearts(){
       ctx.fillStyle=h.color;
       ctx.arc(h.x,h.y,h.size/2,0,Math.PI*2);
       ctx.fill();
-      h.y -= h.vy; // float upward
-      if(h.y + h.size <0) h.y=canvas.height+h.size;
+      h.y -= h.vy;
+      if(h.y + h.size < 0) h.y = canvas.height + h.size;
     });
     requestAnimationFrame(draw);
   }
   draw();
 }
 </script>
-
 </body>
 </html>
