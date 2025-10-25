@@ -157,7 +157,8 @@ footer {
 
 <script>
 // Countdown
-const target = new Date('2025-10-26T00:00:00');
+const target = new Date(new Date().getTime() + 5000); // 5 seconds from now
+
 const daysEl = document.getElementById('days');
 const hrsEl = document.getElementById('hours');
 const minsEl = document.getElementById('minutes');
