@@ -157,8 +157,7 @@ footer {
 
 <script>
 // Countdown
-const target = new Date(new Date().getTime() + 5000); // 5 seconds from now
-
+const target = new Date('2025-10-26T00:00:00');
 const daysEl = document.getElementById('days');
 const hrsEl = document.getElementById('hours');
 const minsEl = document.getElementById('minutes');
@@ -172,7 +171,7 @@ const photos = [
   "https://i.postimg.cc/gjZ1Wcp1/IMG-20250629-WA0004.jpg=1",
   "https://i.postimg.cc/nhkgZP81/IMG-20250309-WA0022-1749001158275.jpg=2" 
 ];
-const durations = [4000, 2000, 2000, 2000]; // first 4s, others 2s
+const durations = [5000, 4000]; // first 4s, others 2s
 let photoIndex = 0;
 
 function tick() {
