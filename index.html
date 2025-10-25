@@ -106,7 +106,8 @@ footer {
   position: fixed;
   bottom: 10px;
   font-size: 0.9rem;
-  color: #ffb6c1;
+  text-align: center;
+  color: #000000;
 }
 </style>
 </head>
@@ -120,9 +121,20 @@ footer {
   <div class="unit"><div id="minutes" class="num">00</div><div class="label">Minutes</div></div>
   <div class="unit"><div id="seconds" class="num">00</div><div class="label">Seconds</div></div>
 </div>
+<!-- 🎵 Background music -->
 <audio id="bg-music" loop>
-    <source src="your-song.mp3.mp3" type="audio/mpeg">
-  </audio>
+  <source src="your-song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  // Starts the music once user clicks anywhere
+  document.addEventListener("click", function startMusic() {
+    const audio = document.getElementById("bg-music");
+    audio.play();
+    document.removeEventListener("click", startMusic);
+  });
+</script>
+
 <div id="slideshow">
   <img id="slide" src="" alt="photo">
 </div>
